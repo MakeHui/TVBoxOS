@@ -432,38 +432,8 @@ public class HomeActivity extends BaseActivity {
     @SuppressLint("NotifyDataSetChanged")
     @Override
     public void onBackPressed() {
-
         // takagen99: Add check for VOD Delete Mode
-        if (HawkConfig.hotVodDelete) {
-            HawkConfig.hotVodDelete = false;
-            UserFragment.homeHotVodAdapter.notifyDataSetChanged();
-        } else {
-            int i;
-            if (this.fragments.size() <= 0 || this.sortFocused >= this.fragments.size() || (i = this.sortFocused) < 0) {
-                exit();
-                return;
-            }
-            BaseLazyFragment baseLazyFragment = this.fragments.get(i);
-            if (baseLazyFragment instanceof GridFragment) {
-                View view = this.sortFocusView;
-                GridFragment grid = (GridFragment) baseLazyFragment;
-                if (grid.restoreView()) {
-                    return;
-                }// 还原上次保存的UI内容
-                if (view != null && !view.isFocused()) {
-                    this.sortFocusView.requestFocus();
-                } else if (this.sortFocused != 0) {
-                    this.mGridView.setSelection(0);
-                } else {
-                    exit();
-                }
-            } else if (baseLazyFragment instanceof UserFragment && UserFragment.tvHotList1.canScrollVertically(-1)) {
-                UserFragment.tvHotList1.scrollToPosition(0);
-                this.mGridView.setSelection(0);
-            } else {
-                exit();
-            }
-        }
+        // 还原上次保存的UI内容
     }
 
     private void exit() {

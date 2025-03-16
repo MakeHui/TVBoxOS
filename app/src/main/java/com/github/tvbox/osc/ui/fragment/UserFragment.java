@@ -7,6 +7,9 @@ import android.view.animation.BounceInterpolator;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.github.tvbox.osc.R;
 import com.github.tvbox.osc.api.ApiConfig;
@@ -120,6 +123,12 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
         tvCollect = findViewById(R.id.tvFavorite);
         tvHistory = findViewById(R.id.tvHistory);
         tvPush = findViewById(R.id.tvPush);
+//        tvLive.setVisibility(View.GONE);
+        tvSearch.setVisibility(View.GONE);
+//        tvSetting.setVisibility(View.INVISIBLE);
+        tvCollect.setVisibility(View.GONE);
+        tvHistory.setVisibility(View.GONE);
+        tvPush.setVisibility(View.GONE);
         tvLive.setOnClickListener(this);
         tvSearch.setOnClickListener(this);
         tvSetting.setOnClickListener(this);
@@ -337,6 +346,28 @@ public class UserFragment extends BaseLazyFragment implements View.OnClickListen
     public void server(ServerEvent event) {
         if (event.type == ServerEvent.SERVER_CONNECTION) {
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (Hawk.get(HawkConfig.HOME_REC_STYLE, false)) {
+            jumpActivity(LivePlayActivity.class);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        tvHotList1.setVisibility(View.INVISIBLE);
+        tvHotList2.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        tvHotList1.setVisibility(View.INVISIBLE);
+        tvHotList2.setVisibility(View.INVISIBLE);
     }
 
     @Override

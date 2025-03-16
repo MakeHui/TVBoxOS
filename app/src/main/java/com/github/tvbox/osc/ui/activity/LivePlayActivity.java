@@ -88,6 +88,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import xyz.doikki.videoplayer.player.VideoView;
 
@@ -172,6 +174,7 @@ public class LivePlayActivity extends BaseActivity {
 
     private boolean isSHIYI = false;
     private boolean isBack = false;
+    private int backCount = 0;
     private static String shiyi_time;//时移时间
     private static int shiyi_time_c;//时移时间差值
     public static String playUrl;
@@ -591,11 +594,20 @@ public class LivePlayActivity extends BaseActivity {
             backcontroller.setVisibility(View.GONE);
         }else if(isBack){
             isBack= false;
-            playPreSource();
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    backCount = 0;
+                }
+            }, 5);
         }else {
             mHandler.removeCallbacks(mConnectTimeoutChangeSourceRun);
             mHandler.removeCallbacks(mUpdateNetSpeedRun);
-            super.onBackPressed();
+            backCount += 1;
+            if (backCount > 9) {
+                playPreSource();
+                super.onBackPressed();
+            }
         }
     }
 
